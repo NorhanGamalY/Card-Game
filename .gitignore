@@ -1,0 +1,16 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Map files
+*.js.map
+*.d.ts.map
+
+# System files
+.DS_Store
+Thumbs.db
