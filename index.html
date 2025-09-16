@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mestry Game</title>
+    <style>
+        body{
+            background-image: url(./bg.png);
+            background-position: center center;
+            background-size: cover;
+            color: black;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        img{
+            width: 10%;
+            padding: 10px;
+            aspect-ratio: 1/1.5;
+        }
+        #container{
+            width: 85%;
+            margin: 12px auto;
+            text-align: center;
+            border: .125rem double pink;
+        }
+@media (min-width: 1025px) {
+  img {
+    width: 10%; 
+    padding: 10px;
+  }
+  #container {
+    width: 85%;
+  }
+}
+@media (max-width: 1024px) and (min-width: 601px) {
+  img {
+    width: 15%;
+    padding: 8px;
+  }
+  #container {
+    width: 95%;
+  }
+}
+@media (max-width: 600px) {
+  img {
+    width: 22%;
+    padding: 5px;
+  }
+  #container {
+    width: 100%;
+    border: none;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <progress id="game-progress" max="100" value="0" style="width: 85%;  height: 22px;"></progress>
+    <audio id="flip-sound" src="./audio/flip.mp3" preload="auto"></audio>
+    <audio id="bg-music" src="./audio/fulltrack.mp3" loop></audio>
+    <audio id="match-sound" src="./audio/good.mp3" preload="auto"></audio>
+    <audio id="unmatch-sound" src="./audio/fail.mp3" preload="auto"></audio>
+
+
+<div id="container"></div>    
+<script type="module" src="./main.js"></script>
+</body>
+</html>
