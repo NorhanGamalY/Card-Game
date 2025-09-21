@@ -1,14 +1,14 @@
 export class AudioService {
-  private musicStarted = false;
+  musicStarted = false;
 
   constructor(
-    private music: HTMLAudioElement | null,
-    private matchS: HTMLAudioElement | null,
-    private unmatchS: HTMLAudioElement | null,
-    private tickS: HTMLAudioElement | null
+    public music: HTMLAudioElement | null,
+    public matchS: HTMLAudioElement | null,
+    public unmatchS: HTMLAudioElement | null,
+    public tickS: HTMLAudioElement | null
   ) {}
 
-  private play(snd: HTMLAudioElement | null, allowOverlap = false): void {
+  play(snd: HTMLAudioElement | null, allowOverlap = false): void {
     if (!snd) return;
     try {
       if (allowOverlap) {
