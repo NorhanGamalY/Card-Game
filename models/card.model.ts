@@ -1,23 +1,23 @@
-import { CardGenerator } from "./flip.model.js";
-import { AudioService } from "./audio.service.js";
+import flipModel = require("./flip.model");
+import audioService = require("./audio.service");
 
 type ImgEl = HTMLImageElement;
 
 export class Cards {
-  private readonly container: HTMLElement | null
-  private mapping: number[] = []
-  private readonly source = "./images"
-  private readonly flipSrc = "./images/flip.jpeg"
-  private card1: ImgEl | null = null
-  private card2: ImgEl | null = null
-  private readonly totalPairs = 10
-  private match = 0
-  private music: HTMLAudioElement | null = null
-  private matchS: HTMLAudioElement | null = null
-  private unmatchS: HTMLAudioElement | null = null
-  private flipSound: HTMLAudioElement | null = null
-  private progressEl: HTMLProgressElement | null = null
-  private audio!: AudioService
+  readonly container: HTMLElement | null
+  mapping: number[] = []
+  readonly source = "./images"
+  readonly flipSrc = "./images/flip.jpeg"
+  card1: ImgEl | null = null
+  card2: ImgEl | null = null
+  readonly totalPairs = 10
+  match = 0
+  music: HTMLAudioElement | null = null
+  matchS: HTMLAudioElement | null = null
+  unmatchS: HTMLAudioElement | null = null
+  flipSound: HTMLAudioElement | null = null
+  progressEl: HTMLProgressElement | null = null
+  audio!: audioService.AudioService
 
   constructor() {
     this.container = document.getElementById("container")
@@ -27,13 +27,13 @@ export class Cards {
     this.flipSound = document.getElementById("flip-sound") as HTMLAudioElement | null
     this.progressEl = document.getElementById("game-progress") as HTMLProgressElement | null
 
-    this.audio = new AudioService(this.music, this.matchS, this.unmatchS, this.flipSound)
+    this.audio = new audioService.AudioService(this.music, this.matchS, this.unmatchS, this.flipSound)
 
     this.init()
   }
 
-  private init(): void {
-    const gen = new CardGenerator();
+  init(): void {
+    const gen = new flipModel.CardGenerator();
     this.mapping = gen.generatePairs(this.totalPairs);
     this.match = 0;
     this.prog(0);
@@ -41,7 +41,7 @@ export class Cards {
     this.clicks();
   }
 
-  private renderImages(): void {
+  renderImages(): void {
     if (!this.container) return;
     this.container.innerHTML = "";
 
@@ -57,53 +57,53 @@ export class Cards {
     }
   }
 
-  private clicks(): void {
+  clicks(): void {
     for (let i = 0; i < this.mapping.length; i++) {
       const el = document.getElementById(String(i + 1)) as ImgEl | null;
       if (el) el.addEventListener("click", () => this.change(el));
     }
   }
 
-  private changeSrc(pairNumber: number): string {
+  changeSrc(pairNumber: number): string {
     return `${this.source}/${pairNumber}.jpeg`;
   }
 
-  private flipU(elem: ImgEl): void {
+  flipU(elem: ImgEl): void {
     const idx = Number(elem.dataset.index);
     const pairNum: number = this.mapping[idx];
     elem.src = this.changeSrc(pairNum);
     elem.dataset.flipped = "true";
   }
 
-  private flipD(elem: ImgEl): void {
+  flipD(elem: ImgEl): void {
     elem.src = this.flipSrc;
     elem.dataset.flipped = "false";
   }
 
-  private isMatched(elem: ImgEl): boolean {
+  isMatched(elem: ImgEl): boolean {
     return elem.dataset.matched === "true"
   }
 
-  private markMatched(a: ImgEl, b: ImgEl): void {
+  markMatched(a: ImgEl, b: ImgEl): void {
     a.dataset.matched = "true"
     b.dataset.matched = "true"
     a.style.pointerEvents = "none"
     b.style.pointerEvents = "none"
   }
 
-  private clear(): void {
+  clear(): void {
     this.card1 = null
     this.card2 = null
   }
 
-  private prog(percent?: number): void {
+  prog(percent?: number): void {
     const p = typeof percent === "number"
       ? Math.max(0, Math.min(100, percent))
       : Math.round((this.match / this.totalPairs) * 100)
     if (this.progressEl) this.progressEl.value = p
   }
 
-  private change(elem: ImgEl): void {
+  change(elem: ImgEl): void {
     this.audio.flip(true);
     this.audio.ensureMusicStarted()
 
